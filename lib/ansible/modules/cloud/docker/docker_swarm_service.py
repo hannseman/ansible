@@ -1116,8 +1116,7 @@ class DockerServiceManager(object):
                 msg = 'Service absent'
             else:
                 if not module.check_mode:
-                    service_id = self.create_service(module.params['name'],
-                                                     new_service)
+                    self.create_service(module.params['name'], new_service)
                 msg = 'Service created'
                 changed = True
                 facts = new_service.get_facts()
