@@ -871,7 +871,7 @@ class DockerService(DockerBaseClass):
         return update_policy, task_template, networks, endpoint_spec, mode, self.labels
 
 
-class DockerServiceManager():
+class DockerServiceManager(object):
     def get_networks_names_ids(self):
         return [{'name': n['Name'], 'id': n['Id']} for n in self.client.networks()]
 
