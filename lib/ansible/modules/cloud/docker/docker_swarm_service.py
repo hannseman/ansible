@@ -289,9 +289,9 @@ ansible_swarm_service:
   returned: always
   type: dict
   description:
-  - Dictionary of variables representing the current state of the service.
-    Matches the module parameters format.
-  - Note that facts are not part of registered vars but accessible directly.
+    - Dictionary of variables representing the current state of the service.
+      Matches the module parameters format.
+    - Note that facts are not part of registered vars but accessible directly.
   sample: '{
     "args": [
       "sleep",
@@ -339,14 +339,14 @@ ansible_swarm_service:
 changes:
   returned: always
   description:
-  - List of changed service attributes if a service has been altered,
-    [] otherwise
+    - List of changed service attributes if a service has been altered,
+      [] otherwise
   type: list
   sample: ['container_labels', 'replicas']
 rebuilt:
   returned: always
   description:
-  - True if the service has been recreated (removed and created)
+    - True if the service has been recreated (removed and created)
   type: bool
   sample: True
 '''
