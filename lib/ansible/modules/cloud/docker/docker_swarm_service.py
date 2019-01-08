@@ -479,7 +479,7 @@ from ansible.module_utils._text import to_text
 try:
     from distutils.version import LooseVersion
     from docker import types
-except Exception:
+except ImportError:
     # missing docker-py handled in ansible.module_utils.docker
     pass
 
