@@ -631,6 +631,7 @@ class DockerService(DockerBaseClass):
                 raise ValueError('got publish.mode "%s", valid values:"ingress", "host"' %
                                  service_p['mode'])
             s.publish.append(service_p)
+
         s.mounts = []
         for param_m in ap['mounts']:
             service_m = {}
