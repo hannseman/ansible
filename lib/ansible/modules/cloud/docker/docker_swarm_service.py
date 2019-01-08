@@ -854,7 +854,7 @@ class DockerService(DockerBaseClass):
             network_id = None
             try:
                 network_id = list(filter(lambda n: n['name'] == network_name, docker_networks))[0]['id']
-            except Exception:
+            except (IndexError, KeyError):
                 pass
             if network_id:
                 networks.append({'Target': network_id})
