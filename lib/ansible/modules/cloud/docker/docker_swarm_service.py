@@ -488,17 +488,17 @@ class DockerService(DockerBaseClass):
     def __init__(self):
         super(DockerService, self).__init__()
         self.constraints = []
-        self.image = ""
+        self.image = ''
         self.args = []
-        self.endpoint_mode = "vip"
+        self.endpoint_mode = 'vip'
         self.dns = []
-        self.hostname = ""
+        self.hostname = ''
         self.tty = False
         self.dns_search = []
         self.dns_options = []
         self.env = []
         self.force_update = None
-        self.log_driver = "json-file"
+        self.log_driver = 'json-file'
         self.log_driver_options = {}
         self.labels = {}
         self.container_labels = {}
@@ -506,8 +506,8 @@ class DockerService(DockerBaseClass):
         self.limit_memory = 0
         self.reserve_cpu = 0.000
         self.reserve_memory = 0
-        self.mode = "replicated"
-        self.user = "root"
+        self.mode = 'replicated'
+        self.user = 'root'
         self.mounts = []
         self.configs = None
         self.secrets = []
@@ -523,7 +523,7 @@ class DockerService(DockerBaseClass):
         self.restart_policy_window = None
         self.update_delay = None
         self.update_parallelism = 1
-        self.update_failure_action = "continue"
+        self.update_failure_action = 'continue'
         self.update_monitor = 5000000000
         self.update_max_failure_ratio = 0.00
         self.update_order = None
@@ -615,7 +615,7 @@ class DockerService(DockerBaseClass):
                 try:
                     setattr(s, param_name, human_to_bytes(ap[param_name]))
                 except ValueError as exc:
-                    raise Exception("Failed to convert %s to bytes: %s" % (param_name, exc))
+                    raise Exception('Failed to convert %s to bytes: %s' % (param_name, exc))
 
         s.publish = []
         for param_p in ap['publish']:
@@ -625,10 +625,10 @@ class DockerService(DockerBaseClass):
             service_p['published_port'] = int(param_p['published_port'])
             service_p['target_port'] = int(param_p['target_port'])
             if service_p['protocol'] not in ['tcp', 'udp']:
-                raise ValueError("got publish.protocol '%s', valid values:'tcp', 'udp'" %
+                raise ValueError('got publish.protocol "%s", valid values:"tcp", "udp"' %
                                  service_p['protocol'])
             if service_p['mode'] not in [None, 'ingress', 'host']:
-                raise ValueError("got publish.mode '%s', valid values:'ingress', 'host'" %
+                raise ValueError('got publish.mode "%s", valid values:"ingress", "host"' %
                                  service_p['mode'])
             s.publish.append(service_p)
         s.mounts = []
@@ -648,8 +648,8 @@ class DockerService(DockerBaseClass):
                 service_c['config_id'] = param_m['config_id']
                 service_c['config_name'] = str(param_m['config_name'])
                 service_c['filename'] = param_m.get('filename', service_c['config_name'])
-                service_c['uid'] = int(param_m.get('uid', "0"))
-                service_c['gid'] = int(param_m.get('gid', "0"))
+                service_c['uid'] = int(param_m.get('uid', '0'))
+                service_c['gid'] = int(param_m.get('gid', '0'))
                 service_c['mode'] = param_m.get('mode', 0o444)
                 s.configs.append(service_c)
 
@@ -659,8 +659,8 @@ class DockerService(DockerBaseClass):
             service_s['secret_id'] = param_m['secret_id']
             service_s['secret_name'] = str(param_m['secret_name'])
             service_s['filename'] = param_m.get('filename', service_s['secret_name'])
-            service_s['uid'] = int(param_m.get('uid', "0"))
-            service_s['gid'] = int(param_m.get('gid', "0"))
+            service_s['uid'] = int(param_m.get('uid', '0'))
+            service_s['gid'] = int(param_m.get('gid', '0'))
             service_s['mode'] = param_m.get('mode', 0o444)
             s.secrets.append(service_s)
         return s
@@ -859,7 +859,7 @@ class DockerService(DockerBaseClass):
             if network_id:
                 networks.append({'Target': network_id})
             else:
-                raise Exception("no docker networks named: %s" % network_name)
+                raise Exception('no docker networks named: %s' % network_name)
 
         ports = {}
         for port in self.publish:
@@ -964,7 +964,7 @@ class DockerServiceManager():
         elif 'Global' in mode.keys():
             ds.mode = 'global'
         else:
-            raise Exception("Unknown service mode: %s" % mode)
+            raise Exception('Unknown service mode: %s' % mode)
         for mount_data in raw_data['Spec']['TaskTemplate']['ContainerSpec'].get('Mounts', []):
             ds.mounts.append({
                 'source': mount_data['Source'],
@@ -1069,13 +1069,13 @@ class DockerServiceManager():
             current_service = self.get_service(module.params['name'])
         except Exception as e:
             return module.fail_json(
-                msg="Error looking for service named %s: %s" %
+                msg='Error looking for service named %s: %s' %
                     (module.params['name'], e))
         try:
             new_service = DockerService.from_ansible_params(module.params, current_service)
         except Exception as e:
             return module.fail_json(
-                msg="Error parsing module parameters: %s" % e)
+                msg='Error parsing module parameters: %s' % e)
 
         changed = False
         msg = 'noop'
@@ -1137,7 +1137,7 @@ def main():
     argument_spec = dict(
         name=dict(required=True),
         image=dict(type='str'),
-        state=dict(default="present", choices=['present', 'absent']),
+        state=dict(default='present', choices=['present', 'absent']),
         mounts=dict(default=[], type='list'),
         configs=dict(default=None, type='list'),
         secrets=dict(default=[], type='list'),
@@ -1145,7 +1145,7 @@ def main():
         args=dict(default=[], type='list'),
         env=dict(default=[], type='list'),
         force_update=dict(default=False, type='bool'),
-        log_driver=dict(default="json-file", type='str'),
+        log_driver=dict(default='json-file', type='str'),
         log_driver_options=dict(default={}, type='dict'),
         publish=dict(default=[], type='list'),
         constraints=dict(default=[], type='list'),
@@ -1153,10 +1153,10 @@ def main():
         dns=dict(default=[], type='list'),
         dns_search=dict(default=[], type='list'),
         dns_options=dict(default=[], type='list'),
-        hostname=dict(default="", type='str'),
+        hostname=dict(default='', type='str'),
         labels=dict(default={}, type='dict'),
         container_labels=dict(default={}, type='dict'),
-        mode=dict(default="replicated"),
+        mode=dict(default='replicated'),
         replicas=dict(default=-1, type='int'),
         endpoint_mode=dict(default='vip', choices=['vip', 'dnsrr']),
         restart_policy=dict(default='none', choices=['none', 'on-failure', 'any']),
