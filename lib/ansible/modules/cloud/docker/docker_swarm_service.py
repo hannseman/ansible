@@ -881,7 +881,6 @@ class DockerServiceManager(object):
             return None
 
         raw_data = raw_data[0]
-        networks_names_ids = self.get_networks_names_ids()
         ds = DockerService()
 
         task_template_data = raw_data['Spec']['TaskTemplate']
