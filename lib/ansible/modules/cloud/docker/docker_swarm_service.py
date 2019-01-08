@@ -870,13 +870,6 @@ class DockerService(DockerBaseClass):
         endpoint_spec = types.EndpointSpec(mode=self.endpoint_mode, ports=ports)
         return update_policy, task_template, networks, endpoint_spec, mode, self.labels
 
-    # def fail(self, msg):
-    #     self.parameters.client.module.fail_json(msg=msg)
-    #
-    # @property
-    # def exists(self):
-    #     return True if self.service else False
-
 
 class DockerServiceManager():
     def get_networks_names_ids(self):
