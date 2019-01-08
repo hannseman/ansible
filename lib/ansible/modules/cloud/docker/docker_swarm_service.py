@@ -136,7 +136,7 @@ options:
     required: false
     default: 0.000
     description:
-     - Service CPU reservation. 0 equals no reservation.
+      - Service CPU reservation. 0 equals no reservation.
       - Maps docker service --reserve-cpu option.
   limit_memory:
     required: false
