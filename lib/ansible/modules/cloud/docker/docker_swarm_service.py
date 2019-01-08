@@ -340,7 +340,7 @@ changes:
   returned: always
   description:
   - List of changed service attributes if a service has been altered,
-    [] otherwhise
+    [] otherwise
   type: list
   sample: ['container_labels', 'replicas']
 rebuilt:
