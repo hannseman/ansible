@@ -10,7 +10,7 @@ service_expected_output:
   dns_options: []
   dns_search: []
   endpoint_mode: vip
-  env: []
+  env: null
   force_update: null
   hostname: ''
   image: busybox
