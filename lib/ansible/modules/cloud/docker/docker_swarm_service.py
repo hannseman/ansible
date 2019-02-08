@@ -138,7 +138,7 @@ options:
       - List or dictionary of the service environment variables.
       - If passed a list each items need to be in the format of C(KEY=VALUE).
       - If passed a dictionary values which might be parsed as numbers,
-        booleans or other types by the YAML parser must be quoted (e.g. I("true"))
+        booleans or other types by the YAML parser must be quoted (e.g. C("true"))
         in order to avoid data loss.
       - Maps docker service C(--env) option.
   env_files:
