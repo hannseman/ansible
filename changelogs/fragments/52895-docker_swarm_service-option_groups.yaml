@@ -3,6 +3,7 @@ minor_changes:
   - "docker_swarm_service - Add option ``limits`` as a grouper for resource limit options."
   - "docker_swarm_service - Add option ``reservations`` as a grouper for resource reservation options."
   - "docker_swarm_service - Add option ``restart_config`` as a grouper for restart options."
+  - "docker_swarm_service - Add option ``update_config`` as a grouper for update options."
 deprecated_features:
   - "docker_swarm_service - Deprecate ``log_driver`` in favour of ``logging``."
   - "docker_swarm_service - Deprecate ``log_driver_options`` in favour of ``logging``."
@@ -14,3 +15,9 @@ deprecated_features:
   - "docker_swarm_service - Deprecate ``restart_policy_attempts`` in favour of ``restart_config``."
   - "docker_swarm_service - Deprecate ``restart_policy_delay`` in favour of ``restart_config``."
   - "docker_swarm_service - Deprecate ``restart_policy_window`` in favour of ``restart_config``."
+  - "docker_swarm_service - Deprecate ``update_delay`` in favour of ``update_config``."
+  - "docker_swarm_service - Deprecate ``update_parallelism`` in favour of ``update_config``."
+  - "docker_swarm_service - Deprecate ``update_failure_action`` in favour of ``update_config``."
+  - "docker_swarm_service - Deprecate ``update_monitor`` in favour of ``update_config``."
+  - "docker_swarm_service - Deprecate ``update_max_failure_ratio`` in favour of ``update_config``."
+  - "docker_swarm_service - Deprecate ``update_order`` in favour of ``update_config``."
