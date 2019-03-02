@@ -229,6 +229,25 @@ options:
       - Corresponds to the C(--log-opt) option of C(docker service create).
       - Deprecated in 2.8, will be removed in 2.12. Use parameter C(logging) instead.
     type: dict
+  reservations:
+    description:
+      - Configures service resource reservations.
+    suboptions:
+      cpus:
+        description:
+          - Service CPU reservation. C(0) equals no reservation.
+          - Corresponds to the C(--reserve-cpu) option of C(docker service create).
+        type: float
+      memory:
+        description:
+          - "Service memory reservation (format: C(<number>[<unit>])). Number is a positive integer.
+            Unit can be C(B) (byte), C(K) (kibibyte, 1024B), C(M) (mebibyte), C(G) (gibibyte),
+            C(T) (tebibyte), or C(P) (pebibyte)."
+          - C(0) equals no reservation.
+          - Omitting the unit defaults to bytes.
+          - Corresponds to the C(--reserve-memory) option of C(docker service create).
+        type: str
+    type: dict
   limits:
     description:
       - Configures service resource limits.
