@@ -434,10 +434,44 @@ options:
       - Corresponds to the C(--replicas) option of C(docker service create).
     type: int
     default: -1
+  restart_config:
+    description:
+      - Configures if and how to restart containers when they exit.
+    suboptions:
+      condition:
+        description:
+          - Restart condition of the service.
+          - Corresponds to the C(--restart-condition) option of C(docker service create).
+        type: str
+        choices:
+          - none
+          - on-failure
+          - any
+      delay:
+        description:
+          - Delay between restarts.
+          - "Accepts a a string in a format that look like:
+            C(5h34m56s), C(1m30s) etc. The supported units are C(us), C(ms), C(s), C(m) and C(h)."
+          - Corresponds to the C(--restart-delay) option of C(docker service create).
+        type: str
+      max_attempts:
+        description:
+          - Maximum number of service restarts.
+          - Corresponds to the C(--restart-condition) option of C(docker service create).
+        type: int
+      window:
+        description:
+          - Restart policy evaluation window.
+          - "Accepts a string in a format that look like:
+            C(5h34m56s), C(1m30s) etc. The supported units are C(us), C(ms), C(s), C(m) and C(h)."
+          - Corresponds to the C(--restart-window) option of C(docker service create).
+        type: str
+    type: dict
   restart_policy:
     description:
       - Restart condition of the service.
       - Corresponds to the C(--restart-condition) option of C(docker service create).
+      - Deprecated in 2.8, will be removed in 2.12. Use parameter C(restart_config) instead.
     type: str
     choices:
       - none
@@ -447,6 +481,7 @@ options:
     description:
       - Maximum number of service restarts.
       - Corresponds to the C(--restart-condition) option of C(docker service create).
+      - Deprecated in 2.8, will be removed in 2.12. Use parameter C(restart_config) instead.
     type: int
   restart_policy_delay:
     description:
@@ -454,6 +489,7 @@ options:
       - "Accepts a duration as an integer in nanoseconds or as a string in a format that look like:
         C(5h34m56s), C(1m30s) etc. The supported units are C(us), C(ms), C(s), C(m) and C(h)."
       - Corresponds to the C(--restart-delay) option of C(docker service create).
+      - Deprecated in 2.8, will be removed in 2.12. Use parameter C(restart_config) instead.
     type: raw
   restart_policy_window:
     description:
@@ -461,6 +497,7 @@ options:
       - "Accepts a duration as an integer in nanoseconds or as a string in a format that look like:
         C(5h34m56s), C(1m30s) etc. The supported units are C(us), C(ms), C(s), C(m) and C(h)."
       - Corresponds to the C(--restart-window) option of C(docker service create).
+      - Deprecated in 2.8, will be removed in 2.12. Use parameter C(restart_config) instead.
     type: raw
   update_delay:
     description:
@@ -890,6 +927,38 @@ class DockerService(DockerBaseClass):
         }
 
     @staticmethod
+    def get_restart_config_from_ansible_params(params):
+        restart_config = params['restart_config'] or {}
+        condition = restart_config.get(
+            'condition',
+            params['restart_policy']
+        )
+        delay = restart_config.get(
+            'delay',
+            params['restart_policy_delay']
+        )
+        delay = get_nanoseconds_from_raw_option(
+            'restart_policy_delay',
+            delay
+        )
+        max_attempts = restart_config.get(
+            'max_attempts',
+            params['restart_policy_attempts']
+        )
+        window = restart_config.get(
+            'window',
+            params['restart_policy_window']
+        )
+        window = get_nanoseconds_from_raw_option(
+            'restart_policy_window',
+            window
+        )
+        return {
+            'restart_policy': condition,
+            'restart_policy_delay': delay,
+            'restart_policy_attempts': max_attempts,
+            'restart_policy_window': window
+        }
     @staticmethod
     def get_logging_from_ansible_params(params):
         logging = params['logging'] or {}
@@ -968,8 +1037,6 @@ class DockerService(DockerBaseClass):
         s.mode = ap['mode']
         s.networks = ap['networks']
         s.stop_signal = ap['stop_signal']
-        s.restart_policy = ap['restart_policy']
-        s.restart_policy_attempts = ap['restart_policy_attempts']
         s.update_parallelism = ap['update_parallelism']
         s.update_failure_action = ap['update_failure_action']
         s.update_max_failure_ratio = ap['update_max_failure_ratio']
@@ -1008,14 +1075,10 @@ class DockerService(DockerBaseClass):
 
         s.env = get_docker_environment(ap['env'], ap['env_files'])
 
-        s.restart_policy_delay = get_nanoseconds_from_raw_option(
-            'restart_policy_delay',
-            ap['restart_policy_delay']
-        )
-        s.restart_policy_window = get_nanoseconds_from_raw_option(
-            'restart_policy_window',
-            ap['restart_policy_window']
-        )
+        restart_config = cls.get_restart_config_from_ansible_params(ap)
+        for key, value in restart_config.items():
+            setattr(s, key, value)
+
         logging_config = cls.get_logging_from_ansible_params(ap)
         for key, value in logging_config.items():
             setattr(s, key, value)
@@ -1896,6 +1959,12 @@ def main():
         reserve_cpu=dict(type='float'),
         reserve_memory=dict(type='str'),
         resolve_image=dict(type='bool', default=True),
+        restart_config=dict(type='dict', options=dict(
+            condition=dict(type='str', choices=['none', 'on-failure', 'any']),
+            delay=dict(type='str'),
+            max_attempts=dict(type='int'),
+            window=dict(type='str'),
+        )),
         restart_policy=dict(type='str', choices=['none', 'on-failure', 'any']),
         restart_policy_delay=dict(type='raw'),
         restart_policy_attempts=dict(type='int'),

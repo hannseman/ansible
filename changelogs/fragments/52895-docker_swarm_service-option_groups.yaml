@@ -2,6 +2,7 @@ minor_changes:
   - "docker_swarm_service - Add option ``logging`` as a grouper for logging options."
   - "docker_swarm_service - Add option ``limits`` as a grouper for resource limit options."
   - "docker_swarm_service - Add option ``reservations`` as a grouper for resource reservation options."
+  - "docker_swarm_service - Add option ``restart_config`` as a grouper for restart options."
 deprecated_features:
   - "docker_swarm_service - Deprecate ``log_driver`` in favour of ``logging``."
   - "docker_swarm_service - Deprecate ``log_driver_options`` in favour of ``logging``."
@@ -9,3 +10,7 @@ deprecated_features:
   - "docker_swarm_service - Deprecate ``limit_memory`` in favour of ``limits``."
   - "docker_swarm_service - Deprecate ``reserve_cpu`` in favour of ``reservations``."
   - "docker_swarm_service - Deprecate ``reserve_memory`` in favour of ``reservations``."
+  - "docker_swarm_service - Deprecate ``restart_policy`` in favour of ``restart_config``."
+  - "docker_swarm_service - Deprecate ``restart_policy_attempts`` in favour of ``restart_config``."
+  - "docker_swarm_service - Deprecate ``restart_policy_delay`` in favour of ``restart_config``."
+  - "docker_swarm_service - Deprecate ``restart_policy_window`` in favour of ``restart_config``."
