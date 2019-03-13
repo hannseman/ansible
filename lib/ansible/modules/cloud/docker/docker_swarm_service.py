@@ -59,17 +59,14 @@ options:
         description:
           - UID of the config file's owner.
         type: int
-        default: 0
       gid:
         description:
           - GID of the config file's group.
         type: int
-        default: 0
       mode:
         description:
           - File access mode inside the container.
         type: str
-        default: "0o444"
   constraints:
     description:
       - List of the service constraints.
@@ -403,7 +400,6 @@ options:
         description:
           - What protocol to use.
         type: str
-        default: tcp
         choices:
           - tcp
           - udp
@@ -614,17 +610,14 @@ options:
         description:
           - UID of the secret file's owner.
         type: int
-        default: 0
       gid:
         description:
           - GID of the secret file's group.
         type: int
-        default: 0
       mode:
         description:
           - File access mode inside the container.
         type: int
-        default: 0o444
   state:
     description:
       - Service state.
@@ -2467,17 +2460,17 @@ def main():
             config_id=dict(type='str', required=True),
             config_name=dict(type='str', required=True),
             filename=dict(type='str'),
-            uid=dict(type='int', default=0),
-            gid=dict(type='int', default=0),
-            mode=dict(type='int', default=0o444),
+            uid=dict(type='int'),
+            gid=dict(type='int'),
+            mode=dict(type='int'),
         )),
         secrets=dict(type='list', elements='dict', options=dict(
             secret_id=dict(type='str', required=True),
             secret_name=dict(type='str', required=True),
             filename=dict(type='str'),
-            uid=dict(type='int', default=0),
-            gid=dict(type='int', default=0),
-            mode=dict(type='int', default=0o444),
+            uid=dict(type='int'),
+            gid=dict(type='int'),
+            mode=dict(type='int'),
         )),
         networks=dict(type='list', elements='str'),
         command=dict(type='raw'),
@@ -2495,7 +2488,7 @@ def main():
         publish=dict(type='list', elements='dict', options=dict(
             published_port=dict(type='int', required=True),
             target_port=dict(type='int', required=True),
-            protocol=dict(type='str', default='tcp', choices=['tcp', 'udp']),
+            protocol=dict(type='str', choices=['tcp', 'udp']),
             mode=dict(type='str', choices=['ingress', 'host']),
         )),
         placement=dict(type='dict', options=dict(
